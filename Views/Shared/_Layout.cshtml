@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Administracion de Recursos</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <div class="navbar navbar-inverse navbar-fixed-top navbar-light navbar-expand-sm my-nav">
+            <div class="container">
+                <div class="navbar-header">
+                    @Html.ActionLink("Administracion de Recursos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <ul class="nav navbar-nav">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                @Html.ActionLink("Registrar Cliente", "Create", "Clientes", null, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Buscar Cliente", "Index", "Clientes", null, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    Listar Clientes &raquo;
+                                </a>
+                                <ul class="dropdown-menu dropdown-submenu">
+                                    <li>
+                                        @Html.ActionLink("Ventas", "Ventas", "Clientes", null, new { @class = "dropdown-item" })
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Proyectos", "Proyectos", "Clientes", null, new { @class = "dropdown-item" })
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">@Html.ActionLink("Reporte de Ventas", "Reporte", "Clientes", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Salir", "Salir", "Login", null, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    }
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Administracion de Recursos</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

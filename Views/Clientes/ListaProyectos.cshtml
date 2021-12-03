@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ADMIN_ASPNET.Models.Proyecto>
+
+@{
+    ViewBag.Title = "Lista de Proyectos";
+}
+
+<h2>ListaProyectos</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Precio)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        Proyecto @item.ID
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Precio)
+    </td>
+</tr>
+}
+
+</table>

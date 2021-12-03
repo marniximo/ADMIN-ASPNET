@@ -1,0 +1,47 @@
+﻿@model ADMIN_ASPNET.Models.Factura
+@using ADMIN_ASPNET.Models;
+@using ADMIN_ASPNET;
+@{
+    Layout = null;
+}
+
+<h2>Factura</h2>
+
+<div>
+    <h4>Nuestra Empresa SRL</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoFactura)
+        </dt>
+
+        <dd>
+             @(((TipoFacturaEnum)Model.TipoFactura).GetDescription())
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bruto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bruto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IVA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IVA)
+        </dd>
+
+    </dl>
+</div>

@@ -1,0 +1,587 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AdminRecModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Legajo" />
+          </Key>
+          <Property Name="Legajo" Type="int" Nullable="false" />
+          <Property Name="Contraseña" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="CUIT" />
+          </Key>
+          <Property Name="CUIT" Type="nvarchar" MaxLength="13" Nullable="false" />
+          <Property Name="IDCliente" Type="int" Nullable="false" />
+          <Property Name="RazonSocial" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDVenta" Type="int" Nullable="false" />
+          <Property Name="IDCliente" Type="int" Nullable="false" />
+          <Property Name="TipoFactura" Type="int" Nullable="false" />
+          <Property Name="Total" Type="numeric" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="Bruto" Type="numeric" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="IVA" Type="numeric" Precision="16" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LineaVenta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDVenta" Type="int" Nullable="false" />
+          <Property Name="IDProyecto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="DNI" />
+          </Key>
+          <Property Name="DNI" Type="int" Nullable="false" />
+          <Property Name="IDCliente" Type="int" Nullable="false" />
+          <Property Name="ApellidoYNombre" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDCliente" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="numeric" Precision="16" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LegajoEmpleado" Type="int" Nullable="false" />
+          <Property Name="IDCliente" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Empresa_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Empresa">
+              <PropertyRef Name="IDCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Factura_Venta">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="IDVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LineaVenta_Proyecto">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="LineaVenta" Type="Self.LineaVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LineaVenta">
+              <PropertyRef Name="IDProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LineaVenta_Venta">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="LineaVenta" Type="Self.LineaVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LineaVenta">
+              <PropertyRef Name="IDVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persona_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Persona">
+              <PropertyRef Name="IDCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proyecto_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Proyecto">
+              <PropertyRef Name="IDCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="IDCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Venta_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Legajo" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="LegajoEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdminRecModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Factura" EntityType="Self.Factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LineaVenta" EntityType="Self.LineaVenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Empresa_Cliente" Association="Self.FK_Empresa_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Empresa" EntitySet="Empresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Cliente" Association="Self.FK_Factura_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Venta" Association="Self.FK_Factura_Venta">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineaVenta_Proyecto" Association="Self.FK_LineaVenta_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="LineaVenta" EntitySet="LineaVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineaVenta_Venta" Association="Self.FK_LineaVenta_Venta">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="LineaVenta" EntitySet="LineaVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Cliente" Association="Self.FK_Persona_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Cliente" Association="Self.FK_Proyecto_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Proyecto" EntitySet="Proyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Cliente" Association="Self.FK_Venta_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Empleado" Association="Self.FK_Venta_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdminRecModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AdminRecEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Clientes" EntityType="AdminRecModel.Cliente" />
+          <EntitySet Name="Empleadoes" EntityType="AdminRecModel.Empleado" />
+          <EntitySet Name="Empresas" EntityType="AdminRecModel.Empresa" />
+          <EntitySet Name="Facturas" EntityType="AdminRecModel.Factura" />
+          <EntitySet Name="LineaVentas" EntityType="AdminRecModel.LineaVenta" />
+          <EntitySet Name="Personas" EntityType="AdminRecModel.Persona" />
+          <EntitySet Name="Proyectoes" EntityType="AdminRecModel.Proyecto" />
+          <EntitySet Name="Ventas" EntityType="AdminRecModel.Venta" />
+          <AssociationSet Name="FK_Empresa_Cliente" Association="AdminRecModel.FK_Empresa_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Empresa" EntitySet="Empresas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Cliente" Association="AdminRecModel.FK_Factura_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Factura" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persona_Cliente" Association="AdminRecModel.FK_Persona_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Persona" EntitySet="Personas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proyecto_Cliente" Association="AdminRecModel.FK_Proyecto_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Proyecto" EntitySet="Proyectoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Empleado" Association="AdminRecModel.FK_Venta_Empleado">
+            <End Role="Empleado" EntitySet="Empleadoes" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Factura_Venta" Association="AdminRecModel.FK_Factura_Venta">
+            <End Role="Venta" EntitySet="Ventas" />
+            <End Role="Factura" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineaVenta_Proyecto" Association="AdminRecModel.FK_LineaVenta_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyectoes" />
+            <End Role="LineaVenta" EntitySet="LineaVentas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineaVenta_Venta" Association="AdminRecModel.FK_LineaVenta_Venta">
+            <End Role="Venta" EntitySet="Ventas" />
+            <End Role="LineaVenta" EntitySet="LineaVentas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Venta_Cliente" Association="AdminRecModel.FK_Venta_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Empresa" Relationship="AdminRecModel.FK_Empresa_Cliente" FromRole="Cliente" ToRole="Empresa" />
+          <NavigationProperty Name="Facturas" Relationship="AdminRecModel.FK_Factura_Cliente" FromRole="Cliente" ToRole="Factura" />
+          <NavigationProperty Name="Persona" Relationship="AdminRecModel.FK_Persona_Cliente" FromRole="Cliente" ToRole="Persona" />
+          <NavigationProperty Name="Proyectos" Relationship="AdminRecModel.FK_Proyecto_Cliente" FromRole="Cliente" ToRole="Proyecto" />
+          <NavigationProperty Name="Ventas" Relationship="AdminRecModel.FK_Venta_Cliente" FromRole="Cliente" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Legajo" />
+          </Key>
+          <Property Name="Legajo" Type="Int32" Nullable="false" />
+          <Property Name="Contraseña" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Ventas" Relationship="AdminRecModel.FK_Venta_Empleado" FromRole="Empleado" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="CUIT" />
+          </Key>
+          <Property Name="CUIT" Type="String" Nullable="false" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="RazonSocial" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cliente" Relationship="AdminRecModel.FK_Empresa_Cliente" FromRole="Empresa" ToRole="Cliente" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TipoFactura" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="Bruto" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="IVA" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <NavigationProperty Name="Cliente" Relationship="AdminRecModel.FK_Factura_Cliente" FromRole="Factura" ToRole="Cliente" />
+          <NavigationProperty Name="Venta" Relationship="AdminRecModel.FK_Factura_Venta" FromRole="Factura" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="LineaVenta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Proyecto" Relationship="AdminRecModel.FK_LineaVenta_Proyecto" FromRole="LineaVenta" ToRole="Proyecto" />
+          <NavigationProperty Name="Venta" Relationship="AdminRecModel.FK_LineaVenta_Venta" FromRole="LineaVenta" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Persona">
+          <Key>
+            <PropertyRef Name="DNI" />
+          </Key>
+          <Property Name="DNI" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="AdminRecModel.FK_Persona_Cliente" FromRole="Persona" ToRole="Cliente" />
+          <Property Name="ApellidoYNombre" Type="String" Nullable="false" Unicode="true" FixedLength="false" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <NavigationProperty Name="Cliente" Relationship="AdminRecModel.FK_Proyecto_Cliente" FromRole="Proyecto" ToRole="Cliente" />
+          <NavigationProperty Name="LineaVentas" Relationship="AdminRecModel.FK_LineaVenta_Proyecto" FromRole="Proyecto" ToRole="LineaVenta" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Empleado" Relationship="AdminRecModel.FK_Venta_Empleado" FromRole="Venta" ToRole="Empleado" />
+          <NavigationProperty Name="Facturas" Relationship="AdminRecModel.FK_Factura_Venta" FromRole="Venta" ToRole="Factura" />
+          <NavigationProperty Name="LineaVentas" Relationship="AdminRecModel.FK_LineaVenta_Venta" FromRole="Venta" ToRole="LineaVenta" />
+          <NavigationProperty Name="Cliente" Relationship="AdminRecModel.FK_Venta_Cliente" FromRole="Venta" ToRole="Cliente" />
+        </EntityType>
+        <Association Name="FK_Empresa_Cliente">
+          <End Type="AdminRecModel.Cliente" Role="Cliente" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.Empresa" Role="Empresa" Multiplicity="0..1" />
+        </Association>
+        <Association Name="FK_Factura_Cliente">
+          <End Type="AdminRecModel.Cliente" Role="Cliente" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.Factura" Role="Factura" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Persona_Cliente">
+          <End Type="AdminRecModel.Cliente" Role="Cliente" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.Persona" Role="Persona" Multiplicity="0..1" />
+        </Association>
+        <Association Name="FK_Proyecto_Cliente">
+          <End Type="AdminRecModel.Cliente" Role="Cliente" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.Proyecto" Role="Proyecto" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Venta_Empleado">
+          <End Type="AdminRecModel.Empleado" Role="Empleado" Multiplicity="1" />
+          <End Type="AdminRecModel.Venta" Role="Venta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Factura_Venta">
+          <End Type="AdminRecModel.Venta" Role="Venta" Multiplicity="1" />
+          <End Type="AdminRecModel.Factura" Role="Factura" Multiplicity="1" />
+        </Association>
+        <Association Name="FK_LineaVenta_Proyecto">
+          <End Type="AdminRecModel.Proyecto" Role="Proyecto" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.LineaVenta" Role="LineaVenta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_LineaVenta_Venta">
+          <End Type="AdminRecModel.Venta" Role="Venta" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.LineaVenta" Role="LineaVenta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Venta_Cliente">
+          <End Type="AdminRecModel.Cliente" Role="Cliente" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AdminRecModel.Venta" Role="Venta" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdminRecModelStoreContainer" CdmEntityContainer="AdminRecEntities" >
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="AdminRecModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleadoes">
+            <EntityTypeMapping TypeName="AdminRecModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Legajo" ColumnName="Legajo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empresas">
+            <EntityTypeMapping TypeName="AdminRecModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresa">
+                <ScalarProperty Name="RazonSocial" ColumnName="RazonSocial" />
+                <ScalarProperty Name="CUIT" ColumnName="CUIT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="AdminRecModel.Factura">
+              <MappingFragment StoreEntitySet="Factura">
+                <ScalarProperty Name="IVA" ColumnName="IVA" />
+                <ScalarProperty Name="Bruto" ColumnName="Bruto" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="TipoFactura" ColumnName="TipoFactura" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LineaVentas">
+            <EntityTypeMapping TypeName="AdminRecModel.LineaVenta">
+              <MappingFragment StoreEntitySet="LineaVenta">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personas">
+            <EntityTypeMapping TypeName="AdminRecModel.Persona">
+              <MappingFragment StoreEntitySet="Persona">
+                <ScalarProperty Name="ApellidoYNombre" ColumnName="ApellidoYNombre" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proyectoes">
+            <EntityTypeMapping TypeName="AdminRecModel.Proyecto">
+              <MappingFragment StoreEntitySet="Proyecto">
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ventas">
+            <EntityTypeMapping TypeName="AdminRecModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_Empresa_Cliente" TypeName="AdminRecModel.FK_Empresa_Cliente" StoreEntitySet="Empresa">
+            <EndProperty Name="Empresa">
+              <ScalarProperty Name="CUIT" ColumnName="CUIT" />
+            </EndProperty>
+            <EndProperty Name="Cliente">
+              <ScalarProperty Name="ID" ColumnName="IDCliente" />
+            </EndProperty>
+            <Condition ColumnName="IDCliente" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Factura_Cliente" TypeName="AdminRecModel.FK_Factura_Cliente" StoreEntitySet="Factura">
+            <EndProperty Name="Factura">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Cliente">
+              <ScalarProperty Name="ID" ColumnName="IDCliente" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Persona_Cliente" TypeName="AdminRecModel.FK_Persona_Cliente" StoreEntitySet="Persona">
+            <EndProperty Name="Persona">
+              <ScalarProperty Name="DNI" ColumnName="DNI" />
+            </EndProperty>
+            <EndProperty Name="Cliente">
+              <ScalarProperty Name="ID" ColumnName="IDCliente" />
+            </EndProperty>
+            <Condition ColumnName="IDCliente" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Proyecto_Cliente" TypeName="AdminRecModel.FK_Proyecto_Cliente" StoreEntitySet="Proyecto">
+            <EndProperty Name="Proyecto">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Cliente">
+              <ScalarProperty Name="ID" ColumnName="IDCliente" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Venta_Empleado" TypeName="AdminRecModel.FK_Venta_Empleado" StoreEntitySet="Venta">
+            <EndProperty Name="Venta">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Empleado">
+              <ScalarProperty Name="Legajo" ColumnName="LegajoEmpleado" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Factura_Venta" TypeName="AdminRecModel.FK_Factura_Venta" StoreEntitySet="Factura">
+            <EndProperty Name="Factura">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Venta">
+              <ScalarProperty Name="ID" ColumnName="IDVenta" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_LineaVenta_Proyecto" TypeName="AdminRecModel.FK_LineaVenta_Proyecto" StoreEntitySet="LineaVenta">
+            <EndProperty Name="LineaVenta">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Proyecto">
+              <ScalarProperty Name="ID" ColumnName="IDProyecto" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_LineaVenta_Venta" TypeName="AdminRecModel.FK_LineaVenta_Venta" StoreEntitySet="LineaVenta">
+            <EndProperty Name="LineaVenta">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Venta">
+              <ScalarProperty Name="ID" ColumnName="IDVenta" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Venta_Cliente" TypeName="AdminRecModel.FK_Venta_Cliente" StoreEntitySet="Venta">
+            <EndProperty Name="Venta">
+              <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+            <EndProperty Name="Cliente">
+              <ScalarProperty Name="ID" ColumnName="IDCliente" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

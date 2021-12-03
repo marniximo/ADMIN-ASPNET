@@ -1,0 +1,59 @@
+﻿@model ADMIN_ASPNET.Models.Cliente
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h3>Estas seguro que quieres eliminar este cliente y toda la informacion asociada con el?</h3>
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+
+        @if (Model.Persona == null)
+        {
+            <dt>
+                @Html.Label("Razon Social");
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Empresa.RazonSocial)
+            </dd>
+        }
+        else
+        {
+            <dt>
+                @Html.Label("Apellido y Nombre")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Persona.ApellidoYNombre)
+            </dd>
+        }
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-primary" /> |
+            @Html.ActionLink("Volver", "Index")
+        </div>
+    }
+</div>

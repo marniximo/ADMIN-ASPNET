@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ADMIN_ASPNET.Models.Venta>
+@using System.Globalization
+@{
+    Layout = null;
+}
+REPORTE DE VENTAS DESDE @ViewBag.fechaInicio.ToString("dd/MM/yyyy") HASTA @ViewBag.fechaFin.ToString("dd/MM/yyyy")
+<br/>
+ 
+
+<table class="table">
+    <tr>
+        <th>
+            Descripcion
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Cliente
+        </th>
+        <th>
+            Precio Final
+        </th>
+    </tr>
+    @foreach (var Venta in Model)
+    {
+        <tr>
+            <td>
+                @Html.Label("Venta " + Venta.ID)
+            </td>
+
+            <td>
+                @Venta.Fecha.ToString("dd/MM/yyyy")
+            </td>
+
+            <td>
+                @Venta.Cliente.Email
+            </td>
+
+            <td>
+                @Venta.LineaVentas.Aggregate(0M, (current, next) => current + next.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR"))
+            </td>
+        </tr>
+    }
+</table>

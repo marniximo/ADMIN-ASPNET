@@ -1,0 +1,53 @@
+﻿@model ADMIN_ASPNET.Models.Venta
+@{
+    ViewBag.Title = "Ultima Venta";
+}
+@using System.Globalization
+
+<h2>Ultima Venta</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Descripcion
+        </th>
+        <th>
+            Costo
+        </th>
+        <th>
+            IVA
+        </th>
+        <th>
+            Precio Final
+        </th>
+    </tr>
+    @foreach (var lineaVenta in Model.LineaVentas) {
+    <tr>
+        <td>
+            @Html.Label("Proyecto " + lineaVenta.Proyecto.ID)
+        </td>
+
+        <td>
+            @lineaVenta.Proyecto.Precio.ToString("C", new CultureInfo("es-AR"))
+        </td>
+
+        <td>
+            @((lineaVenta.Proyecto.Precio * 0.21M).ToString("C", new CultureInfo("es-AR")))
+        </td>
+
+        <td>
+            @((lineaVenta.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR")))
+        </td>
+    </tr>
+    }
+</table>
+
+<div class="text-center">
+    Total de esta venta: @Model.LineaVentas.Aggregate(0M, (current, next) => current + next.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR"))
+</div>
+
+<div class="text-center">
+    @Html.ActionLink("Imprimir Factura", "PDF", new { ID = Model.ID }, new { @class = "btn btn-primary" })
+</div>
+
+@Html.ActionLink("Volver", "Ventas", null, new { @class = "btn btn-primary"})

@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ADMIN_ASPNET.Models.Cliente>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Clientes</h2>
+
+
+<div class="row">
+    <div class="col-sm-3">
+        <input type="text" class="col-sm-12" id="filtro" placeholder="DNI o CUIT"/>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-primary" id="btn_filtrar">Buscar</button>
+    </div>
+</div>
+
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Email
+        </th>
+        <th>
+            Telefono
+        </th>
+        <th>
+            Apellido y nombre / Razon Social
+        </th>
+        <th>
+            DNI / CUIT
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telefono)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa.RazonSocial)
+            @Html.DisplayFor(modelItem => item.Persona.ApellidoYNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa.CUIT)
+            @Html.DisplayFor(modelItem => item.Persona.DNI)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.ID }, new { @class = "link-no-decoration" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.ID }, new { @class = "link-no-decoration" })
+        </td>
+    </tr>
+}
+</table>
+
+<br />
+
+<div>
+    @Html.ActionLink("Nuevo Cliente", "Create", null, new { @class = "btn-primary btn" })
+</div>
