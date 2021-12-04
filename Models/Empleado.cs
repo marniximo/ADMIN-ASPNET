@@ -22,6 +22,7 @@ namespace ADMIN_ASPNET.Models
     
         public int Legajo { get; set; }
         public string Contraseña { get; set; }
+        public int Rol { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Venta> Ventas { get; set; }

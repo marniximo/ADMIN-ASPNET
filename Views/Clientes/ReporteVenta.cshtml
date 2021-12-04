@@ -4,8 +4,8 @@
     Layout = null;
 }
 REPORTE DE VENTAS DESDE @ViewBag.fechaInicio.ToString("dd/MM/yyyy") HASTA @ViewBag.fechaFin.ToString("dd/MM/yyyy")
-<br/>
- 
+<br />
+
 
 <table class="table">
     <tr>
@@ -38,8 +38,10 @@ REPORTE DE VENTAS DESDE @ViewBag.fechaInicio.ToString("dd/MM/yyyy") HASTA @ViewB
             </td>
 
             <td>
-                @Venta.LineaVentas.Aggregate(0M, (current, next) => current + next.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR"))
+                @Venta.Facturas.Total.ToString("C", new CultureInfo("es-AR"))
             </td>
         </tr>
     }
 </table>
+
+Total del periodo: @Model.Aggregate(0M, (current, next) => current + next.Facturas.Total).ToString("C", new CultureInfo("es-AR"))

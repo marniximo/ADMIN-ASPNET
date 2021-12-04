@@ -21,24 +21,25 @@
             Precio Final
         </th>
     </tr>
-    @foreach (var lineaVenta in Model.LineaVentas) {
-    <tr>
-        <td>
-            @Html.Label("Proyecto " + lineaVenta.Proyecto.ID)
-        </td>
+    @foreach (var lineaVenta in Model.LineaVentas)
+    {
+        <tr>
+            <td>
+                @Html.Label("Proyecto " + lineaVenta.Proyecto.ID)
+            </td>
 
-        <td>
-            @lineaVenta.Proyecto.Precio.ToString("C", new CultureInfo("es-AR"))
-        </td>
+            <td>
+                @lineaVenta.Proyecto.Precio.ToString("C", new CultureInfo("es-AR"))
+            </td>
 
-        <td>
-            @((lineaVenta.Proyecto.Precio * 0.21M).ToString("C", new CultureInfo("es-AR")))
-        </td>
+            <td>
+                @((lineaVenta.Proyecto.Precio * 0.21M).ToString("C", new CultureInfo("es-AR")))
+            </td>
 
-        <td>
-            @((lineaVenta.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR")))
-        </td>
-    </tr>
+            <td>
+                @((lineaVenta.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR")))
+            </td>
+        </tr>
     }
 </table>
 
@@ -46,8 +47,11 @@
     Total de esta venta: @Model.LineaVentas.Aggregate(0M, (current, next) => current + next.Proyecto.Precio * 1.21M).ToString("C", new CultureInfo("es-AR"))
 </div>
 
-<div class="text-center">
-    @Html.ActionLink("Imprimir Factura", "PDF", new { ID = Model.ID }, new { @class = "btn btn-primary" })
-</div>
+@if (Context.User.Identity.Name.Split(':')[0] == ADMIN_ASPNET.Models.RolesEmpleados.EMPLEADO_VENTAS.ToString())
+{
+    <div class="text-center">
+        @Html.ActionLink("Imprimir Factura", "PDF", new { ID = Model.ID }, new { @class = "btn btn-primary" })
+    </div>
+}
 
-@Html.ActionLink("Volver", "Ventas", null, new { @class = "btn btn-primary"})
+@Html.ActionLink("Volver", "Ventas", null, new { @class = "btn btn-primary" })

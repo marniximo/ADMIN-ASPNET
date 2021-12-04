@@ -27,31 +27,35 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Telefono)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Empresa.RazonSocial)
-            @Html.DisplayFor(modelItem => item.Persona.ApellidoYNombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Empresa.CUIT)
-            @Html.DisplayFor(modelItem => item.Persona.DNI)
-        </td>
-        <td>
-            @Html.ActionLink("Detalles de la venta", "UltimaVenta", new { id = item.ID }, new { @class = "btn btn-secondary" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa.RazonSocial)
+                @Html.DisplayFor(modelItem => item.Persona.ApellidoYNombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa.CUIT)
+                @Html.DisplayFor(modelItem => item.Persona.DNI)
+            </td>
+            <td>
+                @Html.ActionLink("Detalles de la venta", "UltimaVenta", new { id = item.ID }, new { @class = "btn btn-secondary" })
+            </td>
+        </tr>
+    }
 </table>
 
 <br />
 
-<div>
-    @Html.ActionLink("Nuevo Cliente", "Create", null, new { @class = "btn-primary btn" })
-</div>
+@if (Context.User.Identity.Name.Split(':')[0] == ADMIN_ASPNET.Models.RolesEmpleados.EMPLEADO_VENTAS.ToString())
+{
+    <div>
+        @Html.ActionLink("Nuevo Cliente", "Create", null, new { @class = "btn-primary btn" })
+    </div>
+}

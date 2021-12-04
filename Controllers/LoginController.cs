@@ -27,8 +27,8 @@ namespace ADMIN_ASPNET.Controllers
                 var loginUser = _context.Empleadoes.FirstOrDefault(u => u.Legajo == user.Legajo);
                 if (loginUser != null && user.Contraseña == loginUser.Contraseña)
                 {
-                    FormsAuthentication.SetAuthCookie(user.Legajo.ToString(), false);
-                    FormsAuthentication.RedirectFromLoginPage(user.Legajo.ToString(), false);
+                    FormsAuthentication.SetAuthCookie($"{(RolesEmpleados)loginUser.Rol}:{loginUser.Legajo}", false);
+                    FormsAuthentication.RedirectFromLoginPage($"{(RolesEmpleados)loginUser.Rol}:{loginUser.Legajo}", false);
                 }
             }
             ModelState.AddModelError("InvalidLogin", "Contraseña o Usuario invalido");

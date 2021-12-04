@@ -4,8 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Administracion de Recursos</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     @if (Context.User.Identity.IsAuthenticated)
@@ -22,9 +24,12 @@
                             Clientes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                @Html.ActionLink("Registrar Cliente", "Create", "Clientes", null, new { @class = "dropdown-item" })
-                            </li>
+                            @if (Context.User.Identity.Name.Split(':')[0] == ADMIN_ASPNET.Models.RolesEmpleados.EMPLEADO_VENTAS.ToString())
+                            {
+                                <li>
+                                    @Html.ActionLink("Registrar Cliente", "Create", "Clientes", null, new { @class = "dropdown-item" })
+                                </li>
+                            }
                             <li>
                                 @Html.ActionLink("Buscar Cliente", "Index", "Clientes", null, new { @class = "dropdown-item" })
                             </li>
@@ -43,7 +48,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">@Html.ActionLink("Reporte de Ventas", "Reporte", "Clientes", null, new { @class = "nav-link" })</li>
+                    @if (Context.User.Identity.Name.Split(':')[0] == ADMIN_ASPNET.Models.RolesEmpleados.JEFE_VENTAS.ToString()) {
+                        <li class="nav-item">@Html.ActionLink("Reporte de Ventas", "Reporte", "Clientes", null, new { @class = "nav-link" })</li>
+                    }
                     <li class="nav-item">@Html.ActionLink("Salir", "Salir", "Login", null, new { @class = "nav-link" })</li>
                 </ul>
             </div>

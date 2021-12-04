@@ -19,6 +19,7 @@
           </Key>
           <Property Name="Legajo" Type="int" Nullable="false" />
           <Property Name="Contraseña" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rol" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Empresa">
           <Key>
@@ -307,6 +308,7 @@
           <Property Name="Legajo" Type="Int32" Nullable="false" />
           <Property Name="Contraseña" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Ventas" Relationship="AdminRecModel.FK_Venta_Empleado" FromRole="Empleado" ToRole="Venta" />
+          <Property Name="Rol" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Empresa">
           <Key>
@@ -432,6 +434,7 @@
           <EntitySetMapping Name="Empleadoes">
             <EntityTypeMapping TypeName="AdminRecModel.Empleado">
               <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
                 <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
                 <ScalarProperty Name="Legajo" ColumnName="Legajo" />
               </MappingFragment>

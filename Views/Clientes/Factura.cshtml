@@ -11,20 +11,45 @@
     <h4>Nuestra Empresa SRL</h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (Model.Venta.Cliente.Persona == null)
+        {
+            <dt>
+                CUIT
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Venta.Cliente.Empresa.CUIT)
+            </dd>
+
+            <dt>
+                RAZON SOCIAL
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Venta.Cliente.Empresa.RazonSocial)
+            </dd>
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Venta.Cliente.Persona.DNI)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Venta.Cliente.Persona.DNI)
+            </dd>
+
+            <dt>
+                APELLIDO Y NOMBRE
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Venta.Cliente.Persona.ApellidoYNombre)
+            </dd>
+        }
+        <br/>
         <dt>
             @Html.DisplayNameFor(model => model.TipoFactura)
         </dt>
 
         <dd>
-             @(((TipoFacturaEnum)Model.TipoFactura).GetDescription())
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Total)
+            @(((TipoFacturaEnum)Model.TipoFactura).GetDescription())
         </dd>
 
         <dt>
@@ -34,14 +59,27 @@
         <dd>
             @Html.DisplayFor(model => model.Bruto)
         </dd>
+        @if ((TipoFacturaEnum)Model.TipoFactura == TipoFacturaEnum.TIPO_A)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.IVA)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IVA)
+            </dd>
+        }
 
         <dt>
-            @Html.DisplayNameFor(model => model.IVA)
+            @Html.DisplayNameFor(model => model.Total)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.IVA)
+            @Html.DisplayFor(model => model.Total)
         </dd>
+
+
+
 
     </dl>
 </div>
